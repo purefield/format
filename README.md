@@ -60,6 +60,9 @@ __ "<message>" <format_code>
 - `5`: Simple bullet point
 - `6`: Asterisk bullet point
 - `sameline`: Print on the same line
+- `error`: Prefix message with red 'error'
+- `cmd`: Prefix message with >
+- `ok`: Prefix message with green 'ok'
 
 #### Example:
 ```bash
@@ -84,7 +87,7 @@ ___ "Press any key to continue..."
 ```
 
 ### Execute Commands (`_:` or `cmd`)
-The `cmd` function runs shell commands with error handling and formatted output.
+The `cmd` function runs shell commands with error handling and formatted output. The output is exported into $OUTPUT.
 
 #### Syntax:
 ```bash

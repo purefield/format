@@ -7,17 +7,19 @@ export OK='\033[0;32mOK\033[0m'
 export ERROR='\033[0;31mERROR\033[0m'
 
 function cmd {
+ unset OUTPUT
  local args=$@
  local out=$(bash -c "$args" 2>&1)
-if [ $? -eq 0 ]; then
-  printf "[ $OK    ] $args\n"
-  if [ -n "$out" ]; then
-    echo "$out"
-  fi
-else
-  printf "[ $ERROR ] $args\n"
-  echo; read -p "Press any key to continue... " -n1 -s
-fi
+ if [ $? -eq 0 ]; then
+   _msg "$args" ok
+   if [ -n "$out" ]; then
+     export OUTPUT="$out"
+     echo "$out"
+   fi
+ else
+   _msg "$args" error
+   echo; read -p "Press any key to continue... " -n1 -s
+ fi
 }
 # Alias
 _:(){ cmd "$@"; }
@@ -28,14 +30,17 @@ function ctrl_c(){
 
 function _loop {
   # oo 3 "ls -1 | wc -c"
+  local args="${@:2}"
   local count=-1
   local readyCount=$1;
+  __ "$args" cmd 
   __ "$readyCount <= " sameline
   trap ctrl_c INT
   export trappedCtrlC=0
   start_time="$(date -u +%s)"
   while true; do 
-    countNew=$(bash -c "${@:2}" 2>&1)
+    cmd "$args" 1>/dev/null
+    countNew=$OUTPUT
     if [[ ! "$count" == "$countNew" ]]; then 
       count="$countNew"
       echo -n "$count "
@@ -97,8 +102,17 @@ function _msg {
   6)
     echo " * $msg"
     ;;
-  sameline)
+  cmd)
     echo -n " > $msg"
+    ;;
+  sameline)
+    echo -n "   $msg"
+    ;;
+  error)
+    printf "[ $ERROR ] $msg\n"
+    ;;
+  ok)
+    printf "[ $OK    ] $msg\n"
     ;;
   *)
     echo "$msg"
