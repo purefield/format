@@ -198,22 +198,22 @@ ___ "Cleanup complete. Goodbye, $USER_NAME!"
 ## Use Script for documentation
 **Create a document tree**
 ```bash
-grep '__' script.sh
+egrep '__|_msg' script.sh
 ```
 
 **Show all input questions**
 ```bash
-grep '_?' script.sh
+egrep '_\?|_ask' script.sh
 ```
 
 **Show all commands**
 ```bash
-grep 'cmd' script.sh
+egrep '_\:|cmd' script.sh
 ```
 
 **Show all H1-H3**
 ```bash
-egrep '^\s*__.*?[123]$' script.sh 
+egrep '^\s*(__|_msg).*?[123]$' script.sh 
 ```
 
 ---
