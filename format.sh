@@ -19,12 +19,14 @@ else
   echo; read -p "Press any key to continue... " -n1 -s
 fi
 }
+# Alias
+_:(){ cmd "$@"; }
 
 function ctrl_c(){
   export trappedCtrlC=1
 }
 
-function oo {
+function _loop {
   # oo 3 "ls -1 | wc -c"
   local count=-1
   local readyCount=$1;
@@ -51,9 +53,12 @@ function oo {
     sleep 2 
   done
 }
+# Alias
+oo() { _loop "$@"; }
+
 
 # format output with headings
-function __ {
+function _msg {
  local msg=$1
  local fmt=$2
  echo; 
@@ -100,9 +105,11 @@ function __ {
     ;;
   esac
 }
+# Alias
+__() { _msg "$@"; }
 
 # Pause for user key or time
-function ___ {
+function _wait {
  local msg=$1
  local sec=$2
  echo; echo " * $msg"
@@ -113,9 +120,12 @@ function ___ {
  fi
  echo;
 }
+# Alias
+___() { _wait "$@"; }
+
 
 # Prompt for input
-function _? {
+function _ask {
  # example: _? "a or b" action b $1
  local msg=$1 # message to show
  local var=$2 # variable name to export
@@ -138,5 +148,5 @@ function _? {
  fi
  echo;
 }
-
-
+# Alias
+_?() { _ask "$@"; }

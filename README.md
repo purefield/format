@@ -14,11 +14,11 @@ This script provides utilities to improve the readability, usability, and flow c
 ## Table of Contents
 1. [Getting Started](#getting-started)
 2. [Features and Commands](#features-and-commands)
-   - [Formatted Output (`__`)](#formatted-output-__)
-   - [Pause or Delay (`___`)](#pause-or-delay-___)
-   - [Execute Commands (`cmd`)](#execute-commands-cmd)
-   - [Prompt for Input (`_?`)](#prompt-for-input-__)
-   - [Flow Control (`oo`)](#flow-control-oo)
+   - [Formatted Output (`__`or `_msg`)](#formatted-output-__)
+   - [Pause or Delay (`___` or `_wait`)](#pause-or-delay-___)
+   - [Execute Commands (`_:` or `cmd`)](#execute-commands-cmd)
+   - [Prompt for Input (`_?` or `_ask`)](#prompt-for-input-__)
+   - [Flow Control (`oo` or `_loop`)](#flow-control-oo)
 3. [Examples and Use Cases](#examples-and-use-cases)
    - [Synthetic Example Script](#synthetic-example-script)
 4. [Missing Features](#missing-features)
@@ -44,7 +44,7 @@ Ensure you have the following:
 
 ## Features and Commands
 
-### Formatted Output (`__`)
+### Formatted Output (`__` or `_msg`)
 The `__` function prints messages with customizable styles to improve script readability.
 
 #### Syntax:
@@ -69,7 +69,7 @@ __ "Information with dot border" 4
 __ "This is a bullet point" 5
 ```
 
-### Pause or Delay (`___`)
+### Pause or Delay (`___` or `_wait`)
 The `___` function pauses the script or delays execution for a specified time.
 
 #### Syntax:
@@ -83,7 +83,7 @@ ___ "Processing, please wait..." 5
 ___ "Press any key to continue..."
 ```
 
-### Execute Commands (`cmd`)
+### Execute Commands (`_:` or `cmd`)
 The `cmd` function runs shell commands with error handling and formatted output.
 
 #### Syntax:
@@ -99,7 +99,7 @@ cmd "mkdir test_directory"
 
 If a command fails, the script will prompt the user to press a key to continue.
 
-### Prompt for Input (`_?`)
+### Prompt for Input (`_?` or `_ask`)
 The `_?` function prompts the user for input and stores it in a variable.
 
 #### Syntax:
@@ -116,7 +116,7 @@ _? "Enter the directory name" DIR_NAME "" "/tmp/example_dir" $DIR_NAME
 
 This will prompt the user and store the input in the environment variable unless already set.
 
-### Flow Control (`oo`)
+### Flow Control (`oo` or `_loop`)
 The `oo` function executes a command repeatedly until a specific condition is met or interrupted.
 
 #### Syntax:
