@@ -1,5 +1,10 @@
 # README.md
 
+## Yet another automation tool - yaat
+
+The motivation for this script was to have something to remove clutter and make scripts more scannable and grep-able while adding some flow control.
+You can quickly see what your script does and generate documentation. My inspiration came from jupyter notebooks where the code and documentation join in an execution environment without markup language clouding the content.
+
 ## Shell Script Formatter and Flow Control Tool
 
 This script provides utilities to improve the readability, usability, and flow control of shell scripts. It includes functions for formatted output, handling user inputs, command execution with error handling, and dynamic flow control. These utilities are particularly helpful in complex environments.
@@ -185,6 +190,17 @@ cmd "rm -rf $DIR_NAME"
 ___ "Cleanup complete. Goodbye, $USER_NAME!"
 ```
 
+---
+
+## Use Script for documentation
+**Create a document tree**
+``` grep '__' script.sh ```
+**Show all input questions**
+``` grep '_?' script.sh```
+**Show all commands**
+``` grep 'cmd' script.sh```
+**Show all H1-H3**
+``` egrep '^\s*__.*?[123]$' script.sh ```
 ---
 
 ## Missing Features
