@@ -2,7 +2,7 @@
 
 ## Shell Script Formatter and Flow Control Tool
 
-This script provides utilities to improve the readability, usability, and flow control of shell scripts. It includes functions for formatted output, handling user inputs, command execution with error handling, and dynamic flow control. These utilities are particularly helpful in complex environments, such as setting up ROSA clusters or deploying AI demo applications.
+This script provides utilities to improve the readability, usability, and flow control of shell scripts. It includes functions for formatted output, handling user inputs, command execution with error handling, and dynamic flow control. These utilities are particularly helpful in complex environments.
 
 ---
 
@@ -15,8 +15,7 @@ This script provides utilities to improve the readability, usability, and flow c
    - [Prompt for Input (`_?`)](#prompt-for-input-__)
    - [Flow Control (`oo`)](#flow-control-oo)
 3. [Examples and Use Cases](#examples-and-use-cases)
-   - [Complex Use Case 1: AI Demo Setup](#complex-use-case-1-ai-demo-setup)
-   - [Complex Use Case 2: ROSA Configuration](#complex-use-case-2-rosa-configuration)
+   - [Synthetic Example Script](#synthetic-example-script)
 4. [Missing Features](#missing-features)
 5. [Contributing](#contributing)
 
@@ -61,6 +60,8 @@ __ "<message>" <format_code>
 ```bash
 __ "Starting the script..." 1
 __ "Loading data" 2
+__ "Information with dot border" 4
+__ "This is a bullet point" 5
 ```
 
 ### Pause or Delay (`___`)
@@ -104,9 +105,11 @@ _? "<message>" <variable_name> <default_value> [optional_direct_value]
 #### Example:
 ```bash
 _? "Enter the file name" FILE_NAME "default.txt"
+_? "Enter the directory name" DIR_NAME "" "/tmp/example_dir"
+_? "Enter the directory name" DIR_NAME "" "/tmp/example_dir" $DIR_NAME
 ```
 
-This will prompt the user and store the input in the `FILE_NAME` environment variable.
+This will prompt the user and store the input in the environment variable unless already set.
 
 ### Flow Control (`oo`)
 The `oo` function executes a command repeatedly until a specific condition is met or interrupted.
@@ -119,72 +122,67 @@ oo <target_value> "<command>"
 #### Example:
 ```bash
 oo 5 "ls | wc -l"
+oo 10 "find . -type f | wc -l"
 ```
 
-This example waits until the output of `ls | wc -l` reaches 5.
+This example waits until the specified condition is satisfied. You can interrupt with ctrl+c and the loop will end with a user prompt to continue.
 
 ---
 
 ## Examples and Use Cases
 
-### Use Case 1: Setup Script with Formatted Logs
+### Synthetic Example Script
 ```bash
+#!/bin/bash
+
+# Load formatting and flow control tools
 source format.sh
 
-__ "Starting setup..." 1
-cmd "mkdir /tmp/setup_dir"
-___ "Setup directory created. Pausing for 3 seconds..." 3
-__ "Setup complete." 2
-```
+# Example: Formatted output and command execution
+__ "Starting the synthetic example script" 1
 
-### Use Case 2: Interactive User Input
-```bash
-source format.sh
+# Prompt for input with default value
+__ "Gathering user input" 2
+_? "Enter your name" USER_NAME "Guest"
+__ "Hello, $USER_NAME!" 5
 
-__ "Welcome to the configuration wizard." 3
-_? "Enter the server name" SERVER_NAME "localhost"
-cmd "ping -c 3 $SERVER_NAME"
-___ "Configuration complete."
-```
+# Prompt for input with direct value
+_? "Enter the directory name" DIR_NAME "" "/tmp/example_dir"
+__ "You have chosen: $DIR_NAME" 4
 
-### Use Case 3: Repeated Polling
-```bash
-source format.sh
+# Execute a series of commands
+__ "Executing system checks" 2
+cmd "mkdir -p $DIR_NAME"
+cmd "touch $DIR_NAME/sample_file.txt"
 
-__ "Monitoring the file count..." 2
-oo 10 "ls | wc -l"
-__ "Target file count reached!" 5
-```
+# Check if file creation was successful
+if [ -f "$DIR_NAME/sample_file.txt" ]; then
+  __ "File created successfully" 3
+else
+  __ "File creation failed" 3
+fi
 
-### Complex Use Case 1: AI Demo Setup
-This script can be used to deploy a complete AI demo application stack, including:
-- Setting up namespaces and projects
-- Installing Keycloak, PostgreSQL, Strapi, Redis, and other components
-- Managing Helm charts and secrets
+# Demonstrate flow control
+__ "Monitoring file count in directory" 2
+oo 3 "ls $DIR_NAME | wc -l"
 
-#### Example Workflow:
-```bash
-source format.sh
+# Pause for user confirmation
+___ "Press any key to continue to advanced formatting examples..."
 
-__ "Install AI Demo App" 1
-cmd "git clone https://github.com/demo-repo/ai-starter.git /path/to/demo"
-cmd "oc new-project ai-demo"
-cmd "helm install keycloak /path/to/charts/keycloak"
-___ "Demo setup complete."
-```
+# Demonstrating various formatting levels
+__ "Header with double border" 1
+__ "Sub-header with single border" 2
+__ "Informational header with tilde border" 3
+__ "Details with small dot border" 4
+__ "Simple bullet point" 5
 
-### Complex Use Case 2: ROSA Configuration
-The script can also automate ROSA cluster configurations, including machine pools, upgrades, and operator installations.
+# Pause for user input with timer
+___ "Waiting for 5 seconds..." 5
 
-#### Example Workflow:
-```bash
-source format.sh
-
-__ "Set up ROSA cluster" 1
-_? "Enter bastion host" BASTION_HOST "bastion.example.com"
-cmd "ssh-copy-id user@$BASTION_HOST"
-cmd "rosa create cluster"
-___ "Cluster setup complete."
+# Clean up temporary resources
+__ "Cleaning up resources" 2
+cmd "rm -rf $DIR_NAME"
+___ "Cleanup complete. Goodbye, $USER_NAME!"
 ```
 
 ---
