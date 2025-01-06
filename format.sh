@@ -163,4 +163,4 @@ function _ask {
  echo;
 }
 # Alias
-_?() { _ask "$@"; }
+function _? { _ask "$@"; }
