@@ -22,7 +22,7 @@ function cmd {
  fi
 }
 # Alias
-_:(){ cmd "$@"; }
+_(){ cmd "$@"; }
 
 function ctrl_c(){
   export trappedCtrlC=1
@@ -163,4 +163,4 @@ function _ask {
  echo;
 }
 # Alias
-_?() { _ask "$@"; }
+_q() { _ask "$@"; }
