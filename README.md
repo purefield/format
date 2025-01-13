@@ -26,7 +26,7 @@ This script provides utilities to improve the readability, usability, and flow c
 
 ### Prerequisites
 Ensure you have the following:
-- A Unix-based shell environment
+- A Unix-based shell environment - tested with bash, zsh is not compatible
 - Basic knowledge of shell scripting
 
 ### Installation
