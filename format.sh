@@ -7,33 +7,40 @@ export OK='\033[0;32mOK\033[0m'
 export ERROR='\033[0;31mERROR\033[0m'
 
 function cmd {
+ unset OUTPUT
  local args=$@
  local out=$(bash -c "$args" 2>&1)
-if [ $? -eq 0 ]; then
-  printf "[ $OK    ] $args\n"
-  if [ -n "$out" ]; then
-    echo "$out"
-  fi
-else
-  printf "[ $ERROR ] $args\n"
-  echo; read -p "Press any key to continue... " -n1 -s
-fi
+ if [ $? -eq 0 ]; then
+   _msg "$args" ok
+   if [ -n "$out" ]; then
+     export OUTPUT="$out"
+     echo "$out"
+   fi
+ else
+   _msg "$args" error
+   echo; read -p "Press any key to continue... " -n1 -s
+ fi
 }
+# Alias
+_:(){ cmd "$@"; }
 
 function ctrl_c(){
   export trappedCtrlC=1
 }
 
-function oo {
+function _loop {
   # oo 3 "ls -1 | wc -c"
+  local args="${@:2}"
   local count=-1
   local readyCount=$1;
+  __ "$args" cmd 
   __ "$readyCount <= " sameline
   trap ctrl_c INT
   export trappedCtrlC=0
   start_time="$(date -u +%s)"
   while true; do 
-    countNew=$(bash -c "${@:2}" 2>&1)
+    cmd "$args" 1>/dev/null
+    countNew=$OUTPUT
     if [[ ! "$count" == "$countNew" ]]; then 
       count="$countNew"
       echo -n "$count "
@@ -51,9 +58,12 @@ function oo {
     sleep 2 
   done
 }
+# Alias
+oo() { _loop "$@"; }
+
 
 # format output with headings
-function __ {
+function _msg {
  local msg=$1
  local fmt=$2
  echo; 
@@ -92,17 +102,28 @@ function __ {
   6)
     echo " * $msg"
     ;;
-  sameline)
+  cmd)
     echo -n " > $msg"
+    ;;
+  sameline)
+    echo -n "   $msg"
+    ;;
+  error)
+    printf "[ $ERROR ] $msg\n"
+    ;;
+  ok)
+    printf "[ $OK    ] $msg\n"
     ;;
   *)
     echo "$msg"
     ;;
   esac
 }
+# Alias
+__() { _msg "$@"; }
 
 # Pause for user key or time
-function ___ {
+function _wait {
  local msg=$1
  local sec=$2
  echo; echo " * $msg"
@@ -113,9 +134,12 @@ function ___ {
  fi
  echo;
 }
+# Alias
+___() { _wait "$@"; }
+
 
 # Prompt for input
-function _? {
+function _ask {
  # example: _? "a or b" action b $1
  local msg=$1 # message to show
  local var=$2 # variable name to export
@@ -138,5 +162,5 @@ function _? {
  fi
  echo;
 }
-
-
+# Alias
+function _? { _ask "$@"; }
