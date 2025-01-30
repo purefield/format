@@ -15,7 +15,7 @@ function cmd {
    _msg "$args" ok
    if [ -n "$out" ]; then
      export OUTPUT="$out"
-     echo "$out"
+     echo -e "$out"
    fi
  else
    _msg "$args" error
