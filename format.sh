@@ -9,7 +9,8 @@ export ERROR='\033[0;31mERROR\033[0m'
 function cmd {
  unset OUTPUT
  local args=$@
- local out=$(bash -c "$args" 2>&1)
+ local out
+ out=$(bash -c "$args" 2>&1)
  if [ $? -eq 0 ]; then
    _msg "$args" ok
    if [ -n "$out" ]; then
