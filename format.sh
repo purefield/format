@@ -129,7 +129,7 @@ function _wait {
  local sec=$2
  echo; echo " * $msg"
  if [ -n "$2" ]; then
-   sleep $sec
+   read -p "Wait for $sec sec - skip with any key" -n1 -st $sec
  else
    echo; read -p "Press any key to continue... " -n1 -s
  fi
