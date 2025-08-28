@@ -19,6 +19,7 @@ function cmd {
    fi
  else
    _msg "$args" error
+   trap 'echo; echo "Cancelled by user" error; exit 130' INT
    echo; read -p "Press any key to continue... " -n1 -s
  fi
 }
