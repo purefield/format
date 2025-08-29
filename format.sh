@@ -19,7 +19,7 @@ function cmd {
    fi
  else
    _msg "$args" error
-   trap 'echo; echo "Cancelled by user" error; exit 130' INT
+   trap 'echo; echo "Cancelled by user"; exit 130' INT
    echo; read -p "Press any key to continue... " -n1 -s
  fi
 }
@@ -129,6 +129,7 @@ function _wait {
  local msg=$1
  local sec=$2
  echo; echo " * $msg"
+ trap 'echo; echo "Cancelled by user"; exit 130' INT
  if [ -n "$2" ]; then
    read -p "Wait for $sec sec - skip with any key" -n1 -st $sec
  else
