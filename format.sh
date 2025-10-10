@@ -19,7 +19,7 @@ function cmd {
    fi
  else
    _msg "$args" error
-   trap 'echo; echo "Cancelled by user"; exit 130' INT
+   trap 'echo; echo "Cancelled by user in cmd"; exit 130' INT
    echo; read -p "Press any key to continue... " -n1 -s
  fi
 }
@@ -59,6 +59,7 @@ function _loop {
     fi; 
     sleep 2 
   done
+ trap - INT
 }
 # Alias
 oo() { _loop "$@"; }
@@ -129,12 +130,13 @@ function _wait {
  local msg=$1
  local sec=$2
  echo; echo " * $msg"
- trap 'echo; echo "Cancelled by user"; exit 130' INT
+ trap 'echo; echo "Cancelled by user in wait"; exit 130' INT
  if [ -n "$2" ]; then
    read -p "Wait for $sec sec - skip with any key" -n1 -st $sec
  else
    echo; read -p "Press any key to continue... " -n1 -s
  fi
+ trap - INT
  echo;
 }
 # Alias
