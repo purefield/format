@@ -19,6 +19,10 @@ function cmd {
    fi
  else
    _msg "$args" error
+   if [ "$DEBUG" = 'on' ]; then
+     export ERROR="$out"
+     echo -e "$out" >&2
+   fi
    trap 'echo; echo "Cancelled by user in cmd"; exit 130' INT
    echo; read -p "Press any key to continue... " -n1 -s
  fi
