@@ -56,6 +56,8 @@ function _loop {
       count=$readyCount
       ___ "As you wish!!"
     fi 
+    [[ "$count"      =~ ^[0-9]+$ ]] || count=0
+    [[ "$readyCount" =~ ^[0-9]+$ ]] || readyCount=0
     if [ "$count" -ge "$readyCount" ]; then 
       elapsed_total="$(date -d@$(($(date -u +%s)-$start_time)) -u +%M:%Ss)"
       __ "Waited: $elapsed_total" 5
