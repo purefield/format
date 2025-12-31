@@ -5,6 +5,7 @@ GREEN='\033[0;32m'
 NOC='\033[0m'
 export OK='\033[0;32mOK\033[0m'
 export ERROR='\033[0;31mERROR\033[0m'
+export INFO='\033[0;34mINFO\033[0m'
 
 function cmd {
  unset OUTPUT
@@ -122,6 +123,9 @@ function _msg {
     ;;
   ok)
     printf "[ $OK    ] $msg\n"
+    ;;
+  info)
+    printf "[ $INFO  ] $msg\n"
     ;;
   *)
     echo "$msg"
