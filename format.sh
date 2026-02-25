@@ -45,9 +45,8 @@ function _loop {
   trap ctrl_c INT
   export trappedCtrlC=0
   start_time="$(date -u +%s)"
-  while true; do 
-    cmd "$args" 1>/dev/null
-    countNew=$OUTPUT
+  while true; do
+    countNew=$(bash -c "$args" 2>/dev/null)
     if [[ ! "$count" == "$countNew" ]]; then 
       count="$countNew"
       echo -n "$count "
