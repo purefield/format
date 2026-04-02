@@ -137,10 +137,10 @@ __() { _msg "$@"; }
 # Pause for user key or time
 function _wait {
  local msg=$1
- local sec=$2
+ local sec=${2:-}
  echo; echo " * $msg"
  trap 'echo; echo "Cancelled by user in wait"; exit 130' INT
- if [ -n "$2" ]; then
+ if [ -n "$sec" ]; then
    read -p "Wait for $sec sec - skip with any key" -n1 -st $sec
  else
    echo; read -p "Press any key to continue... " -n1 -s
