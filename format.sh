@@ -8,20 +8,31 @@ export ERROR='\033[0;31mERROR\033[0m'
 export INFO='\033[0;34mINFO\033[0m'
 
 function cmd {
- unset OUTPUT
+ unset OUTPUT RC
+ local quiet=no
+ if [ "${@: -1}" = "--quiet" ]; then
+   quiet=yes
+   set -- "${@:1:$(($#-1))}"
+ fi
  local args=$@
  local out
- out=$(bash -c "$args" 2>&1)
- if [ $? -eq 0 ]; then
+ if [ "$DEBUG" = 'on' ]; then
+   out=$(bash -c "$args")
+ else
+   out=$(bash -c "$args" 2>/dev/null)
+ fi
+ export RC=$?
+ export OUTPUT="$out"
+ if [ "$RC" -eq 0 ]; then
    _msg "$args" ok
    if [ -n "$out" ]; then
-     export OUTPUT="$out"
-     echo -e "$out"
+     if [ "$quiet" != "yes" ]; then
+       echo -e "$out"
+     fi
    fi
  else
    _msg "$args" error
-   if [ "$DEBUG" = 'on' ]; then
-     export ERROR="$out"
+   if [ "$DEBUG" = 'on' ] && [ -n "$out" ]; then
      echo -e "$out" >&2
    fi
    trap 'echo; echo "Cancelled by user in cmd"; exit 130' INT

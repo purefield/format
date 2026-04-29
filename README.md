@@ -87,17 +87,27 @@ ___ "Press any key to continue..."
 ```
 
 ### Execute Commands (`_:` or `cmd`)
-The `cmd` function runs shell commands with error handling and formatted output. The output is exported into $OUTPUT.
+The `cmd` function runs shell commands with error handling and formatted output.
+
+After every run:
+- `OUTPUT` contains stdout from the command.
+- `RC` contains the command return code.
+- stderr is suppressed by default and shown when `DEBUG=on`.
+
+Use the trailing `--quiet` flag to keep the status line while suppressing stdout printing. `OUTPUT` and `RC` are still set.
 
 #### Syntax:
 ```bash
 cmd "<command>"
+cmd "<command>" --quiet
 ```
 
 #### Example:
 ```bash
 cmd "ls -al"
 cmd "mkdir test_directory"
+cmd "find . -maxdepth 1 -type f | wc -l" --quiet
+__ "File count: $OUTPUT" 5
 ```
 
 If a command fails, the script will prompt the user to press a key to continue.
@@ -220,7 +230,7 @@ egrep '^\s*(__|_msg).*?[123]$' script.sh
 
 ## Missing Features
 1. **Enhanced Error Reporting:**
-   - Include detailed logs for failed commands.
+   - Capture stderr separately without temporary files while keeping the implementation readable.
    - Add an option to retry commands automatically.
 
 2. **Parallel Command Execution:**
@@ -247,4 +257,3 @@ To contribute to this project:
 
 ## License
 This script is open-source and free to use. Feel free to customize it for your needs.
-
